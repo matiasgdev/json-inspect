@@ -17,6 +17,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   plugins: ['prettier', 'react-refresh'],
+  ignorePatterns: ['*.cjs'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
