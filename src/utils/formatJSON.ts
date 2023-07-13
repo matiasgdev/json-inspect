@@ -1,23 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-interface Reader {
+export interface Reader {
   key: string
   value: Reader[] | string | number | boolean | Date
 }
 
-function formatJSON(obj: string): Reader[]
-function formatJSON(obj: object): Reader[]
-function formatJSON(obj: unknown): Reader[] {
-  obj = typeof obj === 'string' ? JSON.parse(obj) : obj
+function formatJSON(json: string): Reader[]
+function formatJSON(json: object): Reader[]
+function formatJSON(json: unknown): Reader[] | null {
+  if (!json) {
+    return null
+  }
+
+  json = typeof json === 'string' ? JSON.parse(json) : json
+
   const readable = []
-  const keys = Object.keys(obj as object)
+  const keys = Object.keys(json as object)
 
   for (const key of keys) {
-    const value = (obj as object)[key as keyof typeof obj]
+    const value = (json as object)[key as keyof typeof json]
 
     readable.push({
       key: key,
-      value: typeof value === 'object' ? formatJSON(value) : value,
+      value: Array.isArray(value)
+        ? value
+        : typeof value === 'object'
+        ? formatJSON(value)
+        : value,
     })
   }
 

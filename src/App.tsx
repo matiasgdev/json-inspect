@@ -1,7 +1,13 @@
-import {ChangeEventHandler, useState} from 'react'
+import {ChangeEventHandler, useMemo, useState} from 'react'
+import {formatJSON} from './utils/formatJSON'
+import {DisplayJSON} from './components/DisplayJSON'
 
 function App() {
   const [json, setJSON] = useState('')
+
+  const formattedJSON = useMemo(() => {
+    return formatJSON(json)
+  }, [json])
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = event => {
     const file = event.target.files?.[0] as File
@@ -10,7 +16,7 @@ function App() {
     const reader = new FileReader()
     reader.readAsText(file, 'utf-8')
     reader.onloadend = event => {
-      setJSON(JSON.stringify(event.target?.result, null, 4))
+      setJSON(event.target?.result as string)
     }
   }
 
@@ -36,8 +42,8 @@ function App() {
             />
           </button>
         </div>
-        <div className="flex w-full h-full p-4 border border-red-500 border-solid grow-0">
-          {json}
+        <div className="flex w-full h-full p-4 grow-0 overflow-y-scroll bg-slate-200">
+          <DisplayJSON readableJSON={formattedJSON} />
         </div>
       </section>
     </main>
