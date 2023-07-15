@@ -12,12 +12,17 @@ export const DisplayJSON: React.FC<DisplayJSONProps> = ({readableJSON}) => {
   const render = (value: Reader[]) =>
     value.map(({key, value}, index) => (
       <div className="flex items-start gap-x-4">
-        <span className="w-[2rem] text-left truncate text-slate-500">
+        <span className="w-[2rem] text-left truncate text-slate-500 shrink-0 text-sm">
           {index}
         </span>
-        <details key={key} onClick={handleExpand}>
-          <summary>{key}</summary>
-          <p className={`indent-4`}>
+        <details
+          className="text-slate-400 cursor-pointer"
+          key={key}
+          onClick={handleExpand}
+          open
+        >
+          <summary className="text-sm">{`"${key}"`}</summary>
+          <p className={`ml-8 text-sm`}>
             {Array.isArray(value)
               ? value.map((v, k) => (
                   <div key={`${(v as unknown as string).toString()} ${k}`}>
@@ -26,7 +31,7 @@ export const DisplayJSON: React.FC<DisplayJSONProps> = ({readableJSON}) => {
                 ))
               : typeof value === 'object'
               ? render(value as unknown as Reader[])
-              : value}
+              : `"${value as string}"`}
           </p>
         </details>
       </div>
