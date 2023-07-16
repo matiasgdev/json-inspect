@@ -1,15 +1,13 @@
-import {Reader} from '../../utils/formatJSON'
+import {useJsonStore, JSON} from '../../stores/json-store'
+import {FileButton} from '../FileButton'
 
-interface DisplayJSONProps {
-  readableJSON: Reader[]
-}
-
-export const DisplayJSON: React.FC<DisplayJSONProps> = ({readableJSON}) => {
+export const DisplayJSON: React.FC = () => {
+  const readableJSON = useJsonStore(s => s.json)
   const handleExpand: React.MouseEventHandler<HTMLDetailsElement> = event => {
     console.log(event.target)
   }
 
-  const render = (value: Reader[]) =>
+  const render = (value: JSON[]) =>
     value.map(({key, value}, index) => (
       <div className="flex items-start gap-x-4">
         <span className="w-[2rem] text-left truncate text-slate-500 shrink-0 text-sm">
@@ -30,14 +28,14 @@ export const DisplayJSON: React.FC<DisplayJSONProps> = ({readableJSON}) => {
                   </div>
                 ))
               : typeof value === 'object'
-              ? render(value as unknown as Reader[])
+              ? render(value as unknown as JSON[])
               : `"${value as string}"`}
           </p>
         </details>
       </div>
     ))
 
-  if (!readableJSON) return
+  if (!readableJSON) return <FileButton />
 
   return (
     <div className="relative w-full">

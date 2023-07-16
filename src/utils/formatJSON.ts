@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-export interface Reader {
-  key: string
-  value: Reader[] | string | number | boolean | Date
-}
+import type {JSON} from '../stores/json-store'
 
-function formatJSON(json: string): Reader[]
-function formatJSON(json: object): Reader[]
-function formatJSON(json: unknown): Reader[] | null {
+function formatJSON(json: string): JSON[]
+function formatJSON(json: object): JSON[]
+function formatJSON(json: unknown): JSON[] | null {
   if (!json) {
     return null
   }
