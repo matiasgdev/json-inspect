@@ -14,7 +14,7 @@ export const DisplayJSON: React.FC = () => {
           {index}
         </span>
         <details
-          className="text-slate-400 cursor-pointer"
+          className="text-slate-400 cursor-pointer appearance-none"
           key={key}
           onClick={handleExpand}
           open

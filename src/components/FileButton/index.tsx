@@ -16,17 +16,20 @@ export const FileButton = () => {
     }
   }
   return (
-    <button className="max-h-[40px] bg-slate-700 py-1 px-2 hover:bg-purple-400 transition-colors cursor-pointer border-none outline-none">
-      <label htmlFor="file" className="text-white cursor-pointer">
-        <p>Add here</p>
-      </label>
-      <input
-        type="file"
-        id="file"
-        accept="application/json"
-        className="hidden"
-        onChange={handleChange}
-      />
-    </button>
+    <div className="w-full h-full flex justify-center items-center">
+      <button className="px-8 py-8 opacity-[70%] hover:opacity-[1] transition-colors cursor-pointer border-2 border-slate-200 border-dashed outline-none rounded bg-slate-800">
+        <label htmlFor="file" className="text-white cursor-pointer">
+          <span className="block text-[2rem] mb-2"> {`{ }`}</span>
+          <p className="text-[.85rem]">Press to add a JSON, or drop it here</p>
+        </label>
+        <input
+          type="file"
+          id="file"
+          accept="application/json"
+          className="hidden"
+          onChange={handleChange}
+        />
+      </button>
+    </div>
   )
 }
