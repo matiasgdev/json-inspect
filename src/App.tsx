@@ -15,7 +15,7 @@ function App() {
           </button>
         </div>
       </header>
-      <div className="flex items-center justify-center h-[calc(100vh-75px)] w-full bg-slate-200">
+      <div className="flex items-center justify-center h-[calc(100vh-75px)] w-full">
         <section className="flex flex-col w-[90%] h-[90%] justify-center items-center bg-slate-900">
           <div className="flex w-full h-full p-4 grow-0 overflow-y-scroll">
             <DisplayJSON />

@@ -14,13 +14,13 @@ export const DisplayJSON: React.FC = () => {
           {index}
         </span>
         <details
-          className="text-slate-400 cursor-pointer appearance-none"
+          className="text-slate-400 cursor-pointer list-none"
           key={key}
           onClick={handleExpand}
           open
         >
-          <summary className="text-sm">{`"${key}"`}</summary>
-          <p className={`ml-8 text-sm`}>
+          <summary className="text-sm list-none text-green-300">{`"${key}"`}</summary>
+          <p className={`ml-8 text-sm text-yellow-100`}>
             {Array.isArray(value)
               ? value.map((v, k) => (
                   <div key={`${(v as unknown as string).toString()} ${k}`}>
