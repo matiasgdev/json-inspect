@@ -1,33 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import type {JSON} from '../stores/json-store'
 
-function formatJSON(json: string): JSON[]
-function formatJSON(json: object): JSON[]
-function formatJSON(json: unknown): JSON[] | null {
-  if (!json) {
+function getMetadataJSON(jsonStringyfied: string): JSON[] | null {
+  if (!jsonStringyfied) {
     return null
   }
+  const parsedJSON = JSON.parse(jsonStringyfied) as object
 
-  json = typeof json === 'string' ? JSON.parse(json) : json
-
-  const readable = []
-  const keys = Object.keys(json as object)
+  const metadataJSON = []
+  const keys = Object.keys(parsedJSON)
 
   for (const key of keys) {
-    const value = (json as object)[key as keyof typeof json]
+    const value = parsedJSON[key as keyof typeof parsedJSON]
 
-    readable.push({
+    metadataJSON.push({
       key: key,
       value: Array.isArray(value)
         ? value
         : typeof value === 'object'
-        ? formatJSON(value)
+        ? getMetadataJSON(value)
         : value,
     })
   }
 
-  return readable
+  return metadataJSON as JSON[]
 }
 
-export {formatJSON}
+export {getMetadataJSON}

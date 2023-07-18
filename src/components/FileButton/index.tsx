@@ -1,5 +1,5 @@
 import {ChangeEventHandler} from 'react'
-import {formatJSON} from '../../utils/formatJSON'
+import {getMetadataJSON} from '../../utils/formatJSON'
 import {useJsonStore} from '../../stores/json-store'
 
 export const FileButton = () => {
@@ -12,7 +12,7 @@ export const FileButton = () => {
     const reader = new FileReader()
     reader.readAsText(file, 'utf-8')
     reader.onloadend = event => {
-      setJSON(formatJSON(event.target?.result as string))
+      setJSON(getMetadataJSON(event.target?.result as string)!)
     }
   }
   return (

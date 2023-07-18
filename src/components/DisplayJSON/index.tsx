@@ -9,7 +9,7 @@ export const DisplayJSON: React.FC = () => {
 
   const render = (value: JSON[]) =>
     value.map(({key, value}, index) => (
-      <div className="flex items-start gap-x-4">
+      <div className="flex items-start gap-x-4 hover:bg-slate-600">
         <span className="w-[2rem] text-left truncate text-slate-500 shrink-0 text-sm">
           {index}
         </span>
