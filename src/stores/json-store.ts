@@ -2,6 +2,7 @@ import {create} from 'zustand'
 
 export interface JSON {
   key: string
+  deeperKey: string
   value: JSON[] | string | number | boolean | Date
 }
 

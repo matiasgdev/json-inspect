@@ -1,6 +1,9 @@
 import type {JSON} from '../stores/json-store'
 
-function getMetadataJSON(jsonStringyfied: string): JSON[] | null {
+function getMetadataJSON(
+  jsonStringyfied: string,
+  parentKey = '',
+): JSON[] | null {
   if (!jsonStringyfied) {
     return null
   }
@@ -11,14 +14,13 @@ function getMetadataJSON(jsonStringyfied: string): JSON[] | null {
 
   for (const key of keys) {
     const value = parsedJSON[key as keyof typeof parsedJSON]
+    const deeperKey = parentKey ? `${parentKey}.${key}` : key
 
     metadataJSON.push({
       key: key,
-      value: Array.isArray(value)
-        ? value
-        : typeof value === 'object'
-        ? getMetadataJSON(value)
-        : value,
+      deeperKey,
+      value:
+        typeof value === 'object' ? getMetadataJSON(value, deeperKey) : value,
     })
   }
 

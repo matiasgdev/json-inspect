@@ -1,5 +1,5 @@
 import {ChangeEventHandler} from 'react'
-import {getMetadataJSON} from '../../utils/formatJSON'
+import {getMetadataJSON} from '../../utils/getMetadataJSON'
 import {useJsonStore} from '../../stores/json-store'
 
 export const FileButton = () => {
