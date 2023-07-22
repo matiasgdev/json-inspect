@@ -1,17 +1,12 @@
 import {create} from 'zustand'
 
-export interface JSON {
-  key: string
-  deeperKey: string
-  value: JSON[] | string | number | boolean | Date
-}
-
 interface JSONState {
-  json: JSON[] | null
-  setJSON: (newjJSON: JSON[]) => void
+  planeJSON: object | null
+  setPlaneJSON: (json: object) => void
 }
 
 export const useJsonStore = create<JSONState>(set => ({
   json: null,
-  setJSON: newjJSON => set({json: newjJSON}),
+  planeJSON: null,
+  setPlaneJSON: json => set({planeJSON: json}),
 }))

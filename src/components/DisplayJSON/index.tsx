@@ -1,43 +1,30 @@
-import {useJsonStore, JSON} from '../../stores/json-store'
+import {useJsonStore} from '../../stores/json-store'
+import {ObjectMetadata, getObjectMetadata} from '../../utils/getMetadataJSON'
 import {FileButton} from '../FileButton'
 
 export const DisplayJSON: React.FC = () => {
-  const readableJSON = useJsonStore(s => s.json)
-  const handleExpand: React.MouseEventHandler<HTMLDetailsElement> = event => {
+  const planeJSON = useJsonStore(s => s.planeJSON)
+  const handleExpand: React.MouseEventHandler<HTMLDivElement> = event => {
     console.log(event.target)
   }
 
-  const render = (value: JSON[]) =>
-    value.map(({key, value, deeperKey}, index) => (
-      <div
-        key={deeperKey}
-        className="flex items-start gap-x-4 hover:bg-slate-600"
-      >
-        <span className="w-[2rem] text-left truncate text-slate-500 shrink-0 text-sm">
-          {index}
-        </span>
-        <details
+  const render = (value: ObjectMetadata[]) =>
+    value.map(({key, value, color}) => (
+      <div key={key} className="flex items-start gap-x-4 hover:bg-slate-600">
+        <div
           className="text-slate-400 cursor-pointer list-none"
           onClick={handleExpand}
-          open
         >
-          <summary className="text-sm list-none text-green-300">{`"${key}"`}</summary>
-          <p className={`ml-8 text-sm text-yellow-100`}>
-            {Array.isArray(value)
-              ? value.map(v => <div key={v.deeperKey}>{v.toString()}</div>)
-              : typeof value === 'object'
-              ? render(value as unknown as JSON[])
-              : `"${value as string}"`}
-          </p>
-        </details>
+          <p className={`ml-8 text-sm whitespace-pre ${color}`}>{value}</p>
+        </div>
       </div>
     ))
 
-  if (!readableJSON) return <FileButton />
+  if (!planeJSON) return <FileButton />
 
   return (
     <div className="relative w-full">
-      <div>{render(readableJSON)}</div>
+      <div>{render(getObjectMetadata(planeJSON))}</div>
     </div>
   )
 }

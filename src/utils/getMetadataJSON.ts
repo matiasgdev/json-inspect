@@ -1,30 +1,20 @@
-import type {JSON} from '../stores/json-store'
+import {INDENT_SIZE, colors, colorsTypes} from './configuration'
 
-function getMetadataJSON(
-  jsonStringyfied: string,
-  parentKey = '',
-): JSON[] | null {
-  if (!jsonStringyfied) {
-    return null
-  }
-  const parsedJSON = JSON.parse(jsonStringyfied) as object
-
-  const metadataJSON = []
-  const keys = Object.keys(parsedJSON)
-
-  for (const key of keys) {
-    const value = parsedJSON[key as keyof typeof parsedJSON]
-    const deeperKey = parentKey ? `${parentKey}.${key}` : key
-
-    metadataJSON.push({
-      key: key,
-      deeperKey,
-      value:
-        typeof value === 'object' ? getMetadataJSON(value, deeperKey) : value,
-    })
-  }
-
-  return metadataJSON as JSON[]
+export interface ObjectMetadata {
+  key: string
+  value: string
+  color: string
 }
 
-export {getMetadataJSON}
+export function getObjectMetadata(obj: object): ObjectMetadata[] {
+  const stringifiedObj = JSON.stringify(obj, null, INDENT_SIZE)
+  const mapped = stringifiedObj.split('\n').map((value, index) => ({
+    value: value,
+    key: `${index}.${value.trim()}`,
+    color:
+      colors[value as keyof typeof colors] ??
+      colorsTypes[typeof value as keyof typeof colorsTypes],
+  }))
+
+  return mapped
+}
