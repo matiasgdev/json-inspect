@@ -1,5 +1,7 @@
 export const INDENT_SIZE = 4
 
+export const BRACKETS_LIST = ['{', '[', '}', ']']
+
 export const colors = {
   '{': 'text-white',
   '}': 'text-white',
@@ -9,7 +11,7 @@ export const colors = {
 }
 
 export const colorsTypes = {
-  string: 'text-yellow-100',
-  number: 'text-red-100',
-  boolean: 'text-purple-100',
+  string: 'text-yellow-200',
+  number: 'text-red-300',
+  boolean: 'text-purple-300',
 }
