@@ -1,17 +1,19 @@
 import {INDENT_SIZE, colorsTypes} from './configuration'
 import {getTypeofValue} from './getTypeofValue'
-import {getValues} from './getValues'
+import {ObjectIdentity, getValues} from './getValues'
 import {isSeparator} from './isSeparator'
 export interface ObjectMetadata {
-  key: string
+  renderKey: string
   values: {
     key: {
       color: string
       value: string
+      separator?: string
     }
     value?: {
       color: string
       value: string
+      separator?: string
     }
   }
   typeofValue: string
@@ -20,39 +22,47 @@ export interface ObjectMetadata {
 export function getObjectMetadata(obj: object): ObjectMetadata[] {
   const stringifiedObj = JSON.stringify(obj, null, INDENT_SIZE)
   const metadata = stringifiedObj.split('\n').map((value, index) => {
-    const identity = getValues(value)
+    const objValues = getValues(value)
     const valueType = getTypeofValue(value)
 
-    if (isSeparator(identity)) {
+    if (isSeparator(objValues)) {
       return {
         values: {
           key: {
             color: colorsTypes.separators,
-            value: identity,
+            value: (objValues as ObjectIdentity).entity,
           },
         },
         key: `${index}.${value}`,
       }
     }
 
+    const isArray = Array.isArray(objValues)
+
     return {
       values: {
         key: {
-          color: colorsTypes.key,
-          value: Array.isArray(identity) ? identity[0] : identity,
+          color: isArray
+            ? colorsTypes.key
+            : colorsTypes[
+                typeof JSON.parse(objValues.entity) as keyof typeof colorsTypes
+              ],
+          value: isArray ? objValues[0].entity : objValues.entity,
+          separator: isArray ? objValues[0].separator : objValues.separator,
         },
-        ...(Array.isArray(identity)
+        ...(isArray
           ? {
               value: {
                 color:
                   colorsTypes[valueType as keyof typeof colorsTypes] ??
                   colorsTypes.separators,
-                value: identity[1],
+                value: objValues[1].entity,
+                separator: objValues[1].separator,
               },
             }
           : {}),
       },
-      key: `${index}.${value}`,
+      renderKey: `${index}.${value}`,
     }
   }) as ObjectMetadata[]
 
