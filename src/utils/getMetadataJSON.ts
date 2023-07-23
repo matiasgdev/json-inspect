@@ -1,20 +1,60 @@
-import {INDENT_SIZE, colors, colorsTypes} from './configuration'
-
+import {INDENT_SIZE, colorsTypes} from './configuration'
+import {getTypeofValue} from './getTypeofValue'
+import {getValues} from './getValues'
+import {isSeparator} from './isSeparator'
 export interface ObjectMetadata {
   key: string
-  value: string
-  color: string
+  values: {
+    key: {
+      color: string
+      value: string
+    }
+    value?: {
+      color: string
+      value: string
+    }
+  }
+  typeofValue: string
 }
 
 export function getObjectMetadata(obj: object): ObjectMetadata[] {
   const stringifiedObj = JSON.stringify(obj, null, INDENT_SIZE)
-  const mapped = stringifiedObj.split('\n').map((value, index) => ({
-    value: value,
-    key: `${index}.${value.trim()}`,
-    color:
-      colors[value as keyof typeof colors] ??
-      colorsTypes[typeof value as keyof typeof colorsTypes],
-  }))
+  const metadata = stringifiedObj.split('\n').map((value, index) => {
+    const identity = getValues(value)
+    const valueType = getTypeofValue(value)
 
-  return mapped
+    if (isSeparator(identity)) {
+      return {
+        values: {
+          key: {
+            color: colorsTypes.separators,
+            value: identity,
+          },
+        },
+        key: `${index}.${value}`,
+      }
+    }
+
+    return {
+      values: {
+        key: {
+          color: colorsTypes.key,
+          value: Array.isArray(identity) ? identity[0] : identity,
+        },
+        ...(Array.isArray(identity)
+          ? {
+              value: {
+                color:
+                  colorsTypes[valueType as keyof typeof colorsTypes] ??
+                  colorsTypes.separators,
+                value: identity[1],
+              },
+            }
+          : {}),
+      },
+      key: `${index}.${value}`,
+    }
+  }) as ObjectMetadata[]
+
+  return metadata
 }

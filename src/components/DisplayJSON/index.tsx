@@ -9,13 +9,20 @@ export const DisplayJSON: React.FC = () => {
   }
 
   const render = (value: ObjectMetadata[]) =>
-    value.map(({key, value, color}) => (
+    value.map(({key, values}) => (
       <div key={key} className="flex items-start gap-x-4 hover:bg-slate-600">
         <div
           className="text-slate-400 cursor-pointer list-none"
           onClick={handleExpand}
         >
-          <p className={`ml-8 text-sm whitespace-pre ${color}`}>{value}</p>
+          <div className={`ml-8 text-sm whitespace-pre text-white`}>
+            <span className={`${values.key.color}`}>{values.key.value}</span>
+            {values.value ? (
+              <span className={`${values.value.color}`}>
+                {values.value.value}
+              </span>
+            ) : null}
+          </div>
         </div>
       </div>
     ))
