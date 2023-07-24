@@ -13,13 +13,13 @@ function buildJsonProperties(
 ): JsonProperties[] | null {
   if (json === null) return json
 
-  const metadataJSON: JsonProperties[] = []
+  const props: JsonProperties[] = []
 
   for (const key of Object.keys(json)) {
     const value = json[key as keyof typeof json]
     const deeperKey = parentKey ? `${parentKey}.${key}` : key
 
-    metadataJSON.push({
+    props.push({
       key: key,
       deeperKey,
       value:
@@ -28,7 +28,7 @@ function buildJsonProperties(
           : value,
     })
   }
-  return metadataJSON
+  return props
 }
 
 export function useJsonProperties() {
