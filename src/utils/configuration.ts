@@ -1,4 +1,4 @@
-export const INDENT_SIZE = 4
+export const INDENT_SIZE = 6
 
 export const BRACKETS_LIST = ['{', '[', '}', ']', '],', '},']
 
