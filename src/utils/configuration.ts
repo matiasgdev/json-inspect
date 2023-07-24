@@ -4,8 +4,8 @@ export const BRACKETS_LIST = ['{', '[', '}', ']', '],', '},']
 
 export const colorsTypes = {
   separators: 'text-white',
-  key: 'text-yellow-200',
-  string: 'text-green-600',
-  number: 'text-red-400',
+  key: 'text-[#efd645]',
+  string: 'text-[#00b300]',
+  number: 'text-orange-400',
   boolean: 'text-purple-300',
 }
