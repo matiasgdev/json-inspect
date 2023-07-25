@@ -2,6 +2,8 @@ import {INDENT_SIZE, colorsTypes} from './configuration'
 import {getTypeofValue} from './getTypeofValue'
 import {ObjectIdentity, getValues} from './getValues'
 import {isSeparator} from './isSeparator'
+import {normalizeRenderKey} from './normalizeRenderKey'
+
 export interface ObjectMetadata {
   renderKey: string
   values: {
@@ -16,12 +18,12 @@ export interface ObjectMetadata {
       separator?: string
     }
   }
-  typeofValue: string
 }
 
 export function getObjectMetadata(obj: object): ObjectMetadata[] {
-  const stringifiedObj = JSON.stringify(obj, null, INDENT_SIZE)
-  const metadata = stringifiedObj.split('\n').map((value, index) => {
+  const stringifiedObj = JSON.stringify(obj, null, INDENT_SIZE).split('\n')
+
+  const metadata = stringifiedObj.map((value, index) => {
     const objValues = getValues(value)
     const valueType = getTypeofValue(value)
 
@@ -33,11 +35,13 @@ export function getObjectMetadata(obj: object): ObjectMetadata[] {
             value: (objValues as ObjectIdentity).entity,
           },
         },
-        key: `${index}.${value}`,
+        renderKey: `${index}.${(objValues as ObjectIdentity).entity.trim()}`,
       }
     }
 
     const isArray = Array.isArray(objValues)
+    const targetObj = isArray ? objValues[0] : objValues
+    const accessorKey = normalizeRenderKey(targetObj.entity)
 
     return {
       values: {
@@ -47,8 +51,8 @@ export function getObjectMetadata(obj: object): ObjectMetadata[] {
             : colorsTypes[
                 typeof JSON.parse(objValues.entity) as keyof typeof colorsTypes
               ],
-          value: isArray ? objValues[0].entity : objValues.entity,
-          separator: isArray ? objValues[0].separator : objValues.separator,
+          value: targetObj.entity,
+          separator: targetObj.separator,
         },
         ...(isArray
           ? {
@@ -62,7 +66,7 @@ export function getObjectMetadata(obj: object): ObjectMetadata[] {
             }
           : {}),
       },
-      renderKey: `${index}.${value}`,
+      renderKey: `${index}.${accessorKey}`,
     }
   }) as ObjectMetadata[]
 

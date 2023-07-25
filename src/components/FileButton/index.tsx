@@ -2,7 +2,7 @@ import {ChangeEventHandler} from 'react'
 import {useJsonStore} from '../../stores/json-store'
 
 export const FileButton = () => {
-  const setPlaneJSON = useJsonStore(s => s.setPlaneJSON)
+  const setJson = useJsonStore(s => s.setJson)
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = event => {
     const file = event.target.files?.[0] as File
@@ -11,7 +11,7 @@ export const FileButton = () => {
     const reader = new FileReader()
     reader.readAsText(file, 'utf-8')
     reader.onloadend = event => {
-      setPlaneJSON(JSON.parse(event.target?.result as string))
+      setJson(JSON.parse(event.target?.result as string))
     }
   }
   return (

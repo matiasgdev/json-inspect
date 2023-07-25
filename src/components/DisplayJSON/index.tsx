@@ -2,17 +2,19 @@ import {useMemo} from 'react'
 import {useJsonStore} from '../../stores/json-store'
 import {ObjectMetadata, getObjectMetadata} from '../../utils/getMetadataJSON'
 import {FileButton} from '../FileButton'
+import {useJsonProperties} from '../../hooks/useJsonProperties'
 
 export const DisplayJSON: React.FC = () => {
-  const planeJSON = useJsonStore(s => s.planeJSON)
-  const handleExpand: React.MouseEventHandler<HTMLDivElement> = event => {
-    console.log(event.target)
+  const json = useJsonStore(s => s.json)
+  const jsonProps = useJsonProperties()
+  const handleExpand = (accessor: string) => {
+    console.log(accessor, jsonProps)
   }
 
   const jsonMetadata = useMemo(() => {
-    if (!planeJSON) return null
-    return getObjectMetadata(planeJSON)
-  }, [planeJSON])
+    if (!json) return null
+    return getObjectMetadata(json)
+  }, [json])
 
   const renderEditor = (object: ObjectMetadata[]) =>
     object.map(({renderKey, values: {key, value}}, index) => (
@@ -22,7 +24,7 @@ export const DisplayJSON: React.FC = () => {
       >
         <div
           className="text-slate-400 cursor-pointer list-none  font-serif font-[300] tracking-[.0225rem]"
-          onClick={handleExpand}
+          onClick={() => handleExpand(renderKey)}
         >
           <div className="absolute pl-1 text-[.9rem]">{index}</div>
           <div className={`ml-8 text-[14px] whitespace-pre text-white`}>

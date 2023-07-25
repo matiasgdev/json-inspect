@@ -1,5 +1,6 @@
 import {useMemo} from 'react'
 import {useJsonStore} from '../stores/json-store'
+import {flatten} from 'flat'
 
 export interface JsonProperties {
   key: string
@@ -10,7 +11,7 @@ export interface JsonProperties {
 function buildJsonProperties(
   json: object | null,
   parentKey = '',
-): JsonProperties[] | null {
+): {props: JsonProperties[]; flattenObj: object} | null {
   if (json === null) return json
 
   const props: JsonProperties[] = []
@@ -24,14 +25,14 @@ function buildJsonProperties(
       deeperKey,
       value:
         typeof value === 'object'
-          ? buildJsonProperties(value, deeperKey)!
+          ? buildJsonProperties(value, deeperKey)!.props
           : value,
     })
   }
-  return props
+  return {props, flattenObj: flatten(json)}
 }
 
 export function useJsonProperties() {
-  const json = useJsonStore(s => s.planeJSON)
+  const json = useJsonStore(s => s.json)
   return useMemo(() => buildJsonProperties(json), [json])
 }
