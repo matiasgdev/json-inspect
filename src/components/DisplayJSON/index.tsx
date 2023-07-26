@@ -7,8 +7,9 @@ import {useJsonProperties} from '../../hooks/useJsonProperties'
 export const DisplayJSON: React.FC = () => {
   const json = useJsonStore(s => s.json)
   const jsonProps = useJsonProperties()
-  const handleExpand = (accessor: string) => {
-    console.log(accessor, jsonProps)
+  const handleExpand = (accessor: number) => {
+    const node = jsonProps!.find(node => node.nodeIndex === accessor)
+    console.log({node})
   }
 
   const jsonMetadata = useMemo(() => {
@@ -17,14 +18,14 @@ export const DisplayJSON: React.FC = () => {
   }, [json])
 
   const renderEditor = (object: ObjectMetadata[]) =>
-    object.map(({renderKey, values: {key, value}}, index) => (
+    object.map(({renderKey, accessorKey, values: {key, value}}, index) => (
       <div
         key={renderKey}
         className="flex items-start gap-x-4 hover:bg-slate-600"
       >
         <div
           className="text-slate-400 cursor-pointer list-none  font-serif font-[300] tracking-[.0225rem]"
-          onClick={() => handleExpand(renderKey)}
+          onClick={() => handleExpand(accessorKey)}
         >
           <div className="absolute pl-1 text-[.9rem]">{index}</div>
           <div className={`ml-8 text-[14px] whitespace-pre text-white`}>

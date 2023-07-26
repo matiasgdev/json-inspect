@@ -1,4 +1,5 @@
 import {INDENT_SIZE, colorsTypes} from './configuration'
+import {createKeyAccessorMap} from './getAccessorKey'
 import {getTypeofValue} from './getTypeofValue'
 import {ObjectIdentity, getValues} from './getValues'
 import {isSeparator} from './isSeparator'
@@ -6,6 +7,7 @@ import {normalizeRenderKey} from './normalizeRenderKey'
 
 export interface ObjectMetadata {
   renderKey: string
+  accessorKey: number
   values: {
     key: {
       color: string
@@ -22,6 +24,7 @@ export interface ObjectMetadata {
 
 export function getObjectMetadata(obj: object): ObjectMetadata[] {
   const stringifiedObj = JSON.stringify(obj, null, INDENT_SIZE).split('\n')
+  const getKeyMap = createKeyAccessorMap(stringifiedObj)
 
   const metadata = stringifiedObj.map((value, index) => {
     const objValues = getValues(value)
@@ -67,6 +70,7 @@ export function getObjectMetadata(obj: object): ObjectMetadata[] {
           : {}),
       },
       renderKey: `${index}.${accessorKey}`,
+      accessorKey: getKeyMap(value),
     }
   }) as ObjectMetadata[]
 
