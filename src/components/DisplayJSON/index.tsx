@@ -1,15 +1,23 @@
-import {useMemo} from 'react'
+import {useMemo, useState} from 'react'
 import {useJsonStore} from '../../stores/json-store'
 import {ObjectMetadata, getObjectMetadata} from '../../utils/getMetadataJSON'
 import {FileButton} from '../FileButton'
 import {useJsonNodeMap} from '../../hooks/useJsonNodeMap'
 
 export const DisplayJSON: React.FC = () => {
-  const json = useJsonStore(s => s.json)
+  const {json, collapse} = useJsonStore(s => ({
+    json: s.json,
+    collapse: s.collapseIndex,
+  }))
   const jsonProps = useJsonNodeMap()
   const handleExpand = (nodeIndex: number) => {
     const node = jsonProps![nodeIndex]
-    console.log(node)
+    if (node.typeofValue === 'object') {
+      collapse(node.key, {})
+    }
+    if (node.typeofValue === 'array') {
+      collapse(node.key, [])
+    }
   }
 
   const jsonMetadata = useMemo(() => {
