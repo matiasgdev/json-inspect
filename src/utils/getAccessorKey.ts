@@ -1,11 +1,11 @@
 import {BRACKETS_LIST} from './configuration'
 
-export function createKeyAccessorMap(list: string[]) {
-  const filteredList = list.filter(
-    value => !BRACKETS_LIST.includes(value.trim()),
-  )
+export function createNodeAccessorIndex(list: string[]) {
+  const nodeMapIndex = list
+    .filter(value => !BRACKETS_LIST.includes(value.trim()))
+    .map((_, index) => index)
 
-  return (value: string) => {
-    return filteredList.indexOf(value)
+  return {
+    nodeMapIndex,
   }
 }
