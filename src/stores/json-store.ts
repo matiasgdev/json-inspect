@@ -14,48 +14,37 @@ export const useJsonStore = create<JSONState>((set, get) => ({
   collapsedKeys: new Map<string, any>(),
   setJson: json => set({json: json}),
   collapseIndex: (nodeIndex: string, value: [] | object) => {
-    const currentJson = get().json
+    const currentJson = get().json!
     const collapsedKeys = get().collapsedKeys
 
-    const expand = (index: string, object: object, value: any): object => {
+    const expandOrCollapse = (
+      index: string,
+      object: object,
+      value: any,
+    ): object => {
       // eslint-disable-next-line no-prototype-builtins
       if (!object.hasOwnProperty(index)) {
         object = flatten(object, {maxDepth: 2})
-        return expand(index, object, value)
+        return expandOrCollapse(index, object, value)
       }
-      collapsedKeys.delete(nodeIndex)
+      if (collapsedKeys.get(nodeIndex)) {
+        collapsedKeys.delete(nodeIndex)
+      } else {
+        collapsedKeys.set(nodeIndex, object[nodeIndex as keyof typeof object])
+      }
       object = {...object, [index]: value}
       return object
     }
 
-    const collapse = (index: string, object: object): object => {
-      // eslint-disable-next-line no-prototype-builtins
-      if (!object.hasOwnProperty(index)) {
-        object = flatten(object, {maxDepth: 2})
-        return collapse(index, object)
-      }
-      collapsedKeys.set(nodeIndex, object[nodeIndex as keyof typeof object])
-      object = {...object, [index]: value}
-      return object
-    }
+    const collapsedJson = expandOrCollapse(
+      nodeIndex,
+      currentJson,
+      collapsedKeys.get(nodeIndex) ? collapsedKeys.get(nodeIndex) : value,
+    )
 
-    if (collapsedKeys.get(nodeIndex) && currentJson !== null) {
-      const expandedValue = expand(
-        nodeIndex,
-        currentJson,
-        collapsedKeys.get(nodeIndex),
-      )
-      return set({
-        json: unflatten(expandedValue),
-      })
-    }
-
-    if (currentJson !== null) {
-      const collapsedJson = collapse(nodeIndex, currentJson)
-      set({
-        json: unflatten(collapsedJson),
-        collapsedKeys,
-      })
-    }
+    set({
+      json: unflatten(collapsedJson),
+      collapsedKeys,
+    })
   },
 }))
