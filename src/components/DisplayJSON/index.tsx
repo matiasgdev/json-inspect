@@ -3,6 +3,7 @@ import {useJsonStore} from '../../stores/json-store'
 import {ObjectMetadata, getObjectMetadata} from '../../utils/getMetadataJSON'
 import {FileButton} from '../FileButton'
 import {JsonProperties, useJsonNodeMap} from '../../hooks/useJsonNodeMap'
+import {JsonValue} from './components/JsonValue'
 
 export const DisplayJSON: React.FC = () => {
   const {json, collapse, collapsedKeys} = useJsonStore(s => ({
@@ -49,16 +50,7 @@ export const DisplayJSON: React.FC = () => {
             <div className={`ml-8 text-[14px] whitespace-pre text-white`}>
               <span className={`${key.color}`}>{key.value}</span>
               {key.separator}
-              {value && (
-                <>
-                  <span
-                    className={`${isCollapsed ? 'text-white/70' : value.color}`}
-                  >
-                    {value.value}
-                  </span>
-                  {value.separator}
-                </>
-              )}
+              <JsonValue {...{value, node, isCollapsed}} />
             </div>
           </div>
         </div>

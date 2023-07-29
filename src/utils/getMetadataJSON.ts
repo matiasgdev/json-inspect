@@ -5,20 +5,18 @@ import {ObjectIdentity, getValues} from './getValues'
 import {isSeparator} from './isSeparator'
 import {normalizeRenderKey} from './normalizeRenderKey'
 
+export interface JsonIdentity {
+  color: string
+  value: string
+  separator?: string
+}
+
 export interface ObjectMetadata {
   renderKey: string
   accessorKey: number
   values: {
-    key: {
-      color: string
-      value: string
-      separator?: string
-    }
-    value?: {
-      color: string
-      value: string
-      separator?: string
-    }
+    key: JsonIdentity
+    value?: JsonIdentity
   }
 }
 
