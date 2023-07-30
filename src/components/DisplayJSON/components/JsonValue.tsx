@@ -22,8 +22,8 @@ export const JsonValue: React.FC<JsonValueProps> = ({
     <>
       <span
         className={`${
-          isCollapsed ? 'text-white/70' : value.color
-        } hover:text-white`}
+          isCollapsed ? 'text-white/70 hover:text-white' : value.color
+        }`}
       >
         {isObjectCollapsed ? ' {..}' : isArrayCollapsed ? ' [..]' : objValue}
       </span>

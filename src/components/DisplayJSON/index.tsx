@@ -50,7 +50,7 @@ export const DisplayJSON: React.FC = () => {
             <div className={`ml-8 text-[14px] whitespace-pre text-white`}>
               <span className={`${key.color}`}>{key.value}</span>
               {key.separator}
-              <JsonValue {...{value, node, isCollapsed}} />
+              <JsonValue {...{value, node, toggleExpand, isCollapsed}} />
             </div>
           </div>
         </div>
