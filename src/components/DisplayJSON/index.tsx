@@ -6,13 +6,15 @@ import {JsonProperties, useJsonNodeMap} from '../../hooks/useJsonNodeMap'
 import {JsonValue} from './components/JsonValue'
 
 export const DisplayJSON: React.FC = () => {
-  const {json, collapse, collapsedKeys} = useJsonStore(s => ({
+  const {json, collapse, collapsedKeys, selectNodeIndex} = useJsonStore(s => ({
     json: s.json,
     collapse: s.collapseIndex,
     collapsedKeys: s.collapsedKeys,
+    selectNodeIndex: s.setSelectedNodeIndex,
   }))
   const jsonProps = useJsonNodeMap()
   const handleSelect = (node: JsonProperties) => {
+    selectNodeIndex(node.key)
     toggleExpand(node)
   }
 
@@ -40,12 +42,12 @@ export const DisplayJSON: React.FC = () => {
       return (
         <div
           key={renderKey}
-          className="flex items-start gap-x-4 hover:bg-slate-600"
+          onClick={() => {
+            handleSelect(node)
+          }}
+          className="flex items-start gap-x-4"
         >
-          <div
-            className="text-slate-400 cursor-pointer list-none  font-serif font-[300] tracking-[.0225rem]"
-            onClick={() => handleSelect(node)}
-          >
+          <div className="text-slate-400 list-none  font-serif font-[300] tracking-[.0225rem]">
             <div className="absolute pl-1 text-[.9rem]">{index}</div>
             <div className={`ml-8 text-[14px] whitespace-pre text-white`}>
               <span className={`${key.color}`}>{key.value}</span>

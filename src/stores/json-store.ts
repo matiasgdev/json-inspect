@@ -4,6 +4,8 @@ import {flatten, unflatten} from 'flat'
 
 interface JSONState {
   json: object | null
+  selectedNodeIndex: string
+  setSelectedNodeIndex: (nodeIndex: string) => void
   collapsedKeys: Map<string, any>
   setJson: (json: object) => void
   collapseIndex: (nodeIndex: string, value: [] | object) => void
@@ -11,8 +13,13 @@ interface JSONState {
 
 export const useJsonStore = create<JSONState>((set, get) => ({
   json: null,
+  selectedNodeIndex: '',
+
   collapsedKeys: new Map<string, any>(),
   setJson: json => set({json: json}),
+  setSelectedNodeIndex: (nodeIndex: string) => {
+    set({selectedNodeIndex: nodeIndex})
+  },
   collapseIndex: (nodeIndex: string, value: [] | object) => {
     const currentJson = get().json!
     const collapsedKeys = get().collapsedKeys
