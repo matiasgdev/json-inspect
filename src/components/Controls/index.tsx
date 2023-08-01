@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import SearchIcon from '../../assets/icons/search.svg'
+import {ReactComponent as SearchIcon} from '../../assets/icons/search.svg'
 import {useJsonStore} from '../../stores/json-store'
 
 export const Controls = () => {
@@ -23,7 +23,7 @@ export const Controls = () => {
           className="h-[1.5rem] w-full px-1 text-sm text-white/70 border-none outline-none bg-transparent"
           type="text"
         />
-        <img className="h-[18px] w-[18px]" src={SearchIcon} alt="Search" />
+        <SearchIcon className="h-[18px] w-[18px]" />
       </div>
     </div>
   )
