@@ -1,5 +1,6 @@
 import {JsonProperties} from '../../../hooks/useJsonNodeMap'
 import {JsonIdentity} from '../../../utils/getMetadataJSON'
+import {cn} from '../../../utils/cn'
 
 interface JsonValueProps {
   value?: JsonIdentity
@@ -21,9 +22,12 @@ export const JsonValue: React.FC<JsonValueProps> = ({
   return value ? (
     <>
       <span
-        className={`${
-          isCollapsed ? 'text-white/70 hover:text-white' : value.color
-        }`}
+        className={cn(value.color, {
+          'text-white/70 hover:text-white cursor-pointer': isCollapsed,
+        })}
+        onClick={() => {
+          if (isCollapsed) toggleExpand(node)
+        }}
       >
         {isObjectCollapsed ? ' {..}' : isArrayCollapsed ? ' [..]' : objValue}
       </span>
