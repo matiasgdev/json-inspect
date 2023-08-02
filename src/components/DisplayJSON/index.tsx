@@ -53,7 +53,7 @@ export const DisplayJSON: React.FC = () => {
               handleSelect(node)
             }
           }}
-          className={cn('flex items-start gap-x-4', {
+          className={cn('flex items-start gap-x-4 group', {
             'bg-slate-600': isSelected,
           })}
         >
@@ -65,9 +65,12 @@ export const DisplayJSON: React.FC = () => {
                   onClick={() => {
                     toggleExpand(node)
                   }}
-                  className={cn('h-[11.5px] w-[11.5px] cursor-pointer', {
-                    'rotate-90': isCollapsed,
-                  })}
+                  className={cn(
+                    'h-[11.5px] w-[11.5px] cursor-pointer hidden group-hover:block',
+                    {
+                      'rotate-90': isCollapsed,
+                    },
+                  )}
                 />
               ) : null}
             </div>
