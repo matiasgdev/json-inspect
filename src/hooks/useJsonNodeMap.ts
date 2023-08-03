@@ -19,7 +19,19 @@ function flatJsonProperties(
 ): JsonProperties[] | null {
   if (json === null) return json
 
-  let properties: JsonProperties[] = [...cacheProps]
+  let properties: JsonProperties[] = [
+    ...(parentKey
+      ? []
+      : [
+          {
+            key: 'root',
+            nodeIndex: 0,
+            typeofValue: type(json),
+            value: json as never,
+          },
+        ]),
+    ...cacheProps,
+  ]
 
   for (const key of Object.keys(json)) {
     const value = json[key as keyof typeof json]
@@ -38,10 +50,6 @@ function flatJsonProperties(
       newValue.parentTypeOf = parent?.typeofValue
     }
 
-    // objects in an array cannot be accessed by a node index, only properties
-    newValue.shouldFilter =
-      newValue.parentTypeOf === 'array' && newValue.typeofValue === 'object'
-
     properties.push(newValue)
 
     const shouldFlat = typeofValue === 'array' || typeofValue === 'object'
@@ -51,7 +59,7 @@ function flatJsonProperties(
     }
   }
 
-  return properties.filter(node => !node.shouldFilter)
+  return properties
 }
 
 export function useJsonNodeMap() {

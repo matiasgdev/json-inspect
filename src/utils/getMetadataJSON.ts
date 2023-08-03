@@ -2,7 +2,7 @@ import {INDENT_SIZE, colorsTypes} from './configuration'
 import {createNodeAccessorIndex} from './getAccessorKey'
 import {getTypeofValue} from './getTypeofValue'
 import {ObjectIdentity, getValues} from './getValues'
-import {isSeparator} from './isSeparator'
+import {isOpenBracket, isSeparator} from './isSeparator'
 import {normalizeRenderKey} from './normalizeRenderKey'
 
 export interface JsonIdentity {
@@ -29,7 +29,7 @@ export function getObjectMetadata(obj: object): ObjectMetadata[] {
     const valueType = getTypeofValue(value)
 
     if (isSeparator(objValues)) {
-      return {
+      const defaultSeparatorValues: Partial<ObjectMetadata> = {
         values: {
           key: {
             color: colorsTypes.separators,
@@ -38,6 +38,13 @@ export function getObjectMetadata(obj: object): ObjectMetadata[] {
         },
         renderKey: `${index}.${(objValues as ObjectIdentity).entity.trim()}`,
       }
+
+      if (isOpenBracket(objValues)) {
+        defaultSeparatorValues.accessorKey = keyMap.nodeMapIndex[0]
+        keyMap.nodeMapIndex = keyMap.nodeMapIndex.slice(1)
+      }
+
+      return defaultSeparatorValues
     }
 
     const isArray = Array.isArray(objValues)
