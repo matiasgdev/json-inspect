@@ -15,7 +15,9 @@ export const Controls = () => {
     const paths = [DEFAULT_PATH]
     selectedNodeIndex.split('.').forEach(index => {
       if (index === DEFAULT_PATH) return
-      paths.push(index)
+      if (index) {
+        paths.push(index)
+      }
     })
     return paths
   }, [selectedNodeIndex])
@@ -35,8 +37,10 @@ export const Controls = () => {
           const calculatedPath = paths
             .slice(0, paths.indexOf(path) + 1)
             .join('.')
+
           return (
             <div
+              key={path}
               onClick={() => {
                 handleSelectPath(calculatedPath)
               }}

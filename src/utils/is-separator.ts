@@ -1,5 +1,5 @@
 import {BRACKETS_LIST} from './configuration'
-import {ObjectIdentity} from './getValues'
+import {ObjectIdentity} from './get-values'
 
 export function isSeparator(
   value: ObjectIdentity | [ObjectIdentity, ObjectIdentity],

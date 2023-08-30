@@ -1,9 +1,9 @@
 import {INDENT_SIZE, colorsTypes} from './configuration'
-import {createNodeAccessorIndex} from './getAccessorKey'
-import {getTypeofValue} from './getTypeofValue'
-import {ObjectIdentity, getValues} from './getValues'
-import {isOpenBracket, isSeparator} from './isSeparator'
-import {normalizeRenderKey} from './normalizeRenderKey'
+import {createNodeAccessorIndex} from './create-node-accessor-index'
+import {getTypeofValue} from './get-typeof-value'
+import {ObjectIdentity, getValues} from './get-values'
+import {isOpenBracket, isSeparator} from './is-separator'
+import {normalizeRenderKey} from './normalize-render-key'
 
 export interface JsonIdentity {
   color: string
