@@ -24,7 +24,10 @@ export const Controls = () => {
         {nodePaths.map((path, index) => {
           const isLast = index + 1 === nodePaths.length
           return (
-            <div className="flex items-center justify-start gap-x-[4px] mr-[4px]">
+            <div
+              key={path}
+              className="flex items-center justify-start gap-x-[4px] mr-[4px]"
+            >
               <div
                 className={cn(
                   'cursor-pointer hover:text-white',
