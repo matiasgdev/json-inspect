@@ -11,7 +11,9 @@ export const Controls = () => {
   const nodePaths = useMemo(() => {
     const paths = ['root']
     selectedIndex.split('.').forEach(index => {
-      paths.push(index)
+      if (index) {
+        paths.push(index)
+      }
     })
     return paths
   }, [selectedIndex])
