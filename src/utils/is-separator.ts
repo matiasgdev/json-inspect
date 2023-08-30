@@ -10,3 +10,11 @@ export function isSeparator(
       (Array.isArray(value) ? value[0].entity.trim() : value.entity.trim()),
   )
 }
+
+export function isOpenBracket(
+  value: ObjectIdentity | [ObjectIdentity, ObjectIdentity],
+) {
+  return Array.isArray(value)
+    ? value[0].entity.trim() === '{'
+    : value.entity.trim() === '{'
+}
