@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useState} from 'react'
 import {useJsonStore} from '../../stores/json-store'
-import {ObjectMetadata, getObjectMetadata} from '../../utils/getMetadataJSON'
+import {ObjectMetadata, getObjectMetadata} from '../../utils/get-metadata-json'
 import {FileButton} from '../FileButton'
 import {JsonProperties, useJsonNodeMap} from '../../hooks/useJsonNodeMap'
 import {JsonValue} from './components/JsonValue'
@@ -44,6 +44,7 @@ export const DisplayJSON: React.FC = () => {
       const isSelected = selectedIndex === index
       const isObjectOrArray =
         node?.typeofValue === 'array' || node?.typeofValue === 'object'
+
       return (
         <div
           key={renderKey}
