@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react'
+import {useCallback, useMemo} from 'react'
 import {useJsonStore} from '../../stores/json-store'
 import {ObjectMetadata, getObjectMetadata} from '../../utils/get-metadata-json'
 import {FileButton} from '../FileButton'
@@ -9,14 +9,16 @@ import {cn} from '../../utils/cn'
 import {Controls} from '../Controls'
 
 export const DisplayJSON: React.FC = () => {
-  const [selectedIndex, selectIndex] = useState(0)
-  const {json, collapse, collapsedKeys, selectNodeIndex} = useJsonStore(s => ({
-    json: s.json,
-    collapse: s.collapseIndex,
-    collapsedKeys: s.collapsedKeys,
-    selectNodeIndex: s.setSelectedNodeIndex,
-  }))
+  const {json, collapse, collapsedKeys, selectNodeIndex, selectedIndex} =
+    useJsonStore(s => ({
+      json: s.json,
+      collapse: s.collapseIndex,
+      collapsedKeys: s.collapsedKeys,
+      selectNodeIndex: s.setSelectedNodeIndex,
+      selectedIndex: s.selectedNodeIndex,
+    }))
   const jsonProps = useJsonNodeMap()
+
   const handleSelect = (node: JsonProperties) => {
     selectNodeIndex(node.key)
   }
@@ -42,7 +44,7 @@ export const DisplayJSON: React.FC = () => {
     object.map(({renderKey, accessorKey, values: {key, value}}, index) => {
       const node = jsonProps![accessorKey]
       const isCollapsed = collapsedKeys.has(node?.key)
-      const isSelected = selectedIndex === index
+      const isSelected = node?.key === selectedIndex
       const isObjectOrArray =
         node?.typeofValue === 'array' || node?.typeofValue === 'object'
 
@@ -53,7 +55,6 @@ export const DisplayJSON: React.FC = () => {
             if (node) {
               handleSelect(node)
             }
-            selectIndex(index)
           }}
           className={cn('flex items-start gap-x-4 group', {
             'bg-slate-600': isSelected,
