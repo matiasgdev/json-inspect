@@ -6,6 +6,7 @@ import {JsonProperties, useJsonNodeMap} from '../../hooks/useJsonNodeMap'
 import {JsonValue} from './components/JsonValue'
 import {ReactComponent as ArrowRight} from '../../assets/icons/nav-arrow-right.svg'
 import {cn} from '../../utils/cn'
+import {Controls} from '../Controls'
 
 export const DisplayJSON: React.FC = () => {
   const [selectedIndex, selectIndex] = useState(0)
@@ -88,8 +89,11 @@ export const DisplayJSON: React.FC = () => {
   if (jsonMetadata === null) return <FileButton />
 
   return (
-    <div className="relative w-full">
-      <div>{renderEditor(jsonMetadata)}</div>
+    <div className="flex flex-col w-full h-full grow-0">
+      <Controls />
+      <div className="p-2 overflow-y-scroll">
+        <div className="relative w-full">{renderEditor(jsonMetadata)}</div>
+      </div>
     </div>
   )
 }

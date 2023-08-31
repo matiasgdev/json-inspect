@@ -1,4 +1,3 @@
-import {Controls} from './components/Controls'
 import {DisplayJSON} from './components/DisplayJSON'
 
 function App() {
@@ -18,12 +17,7 @@ function App() {
       </header>
       <div className="flex items-center justify-center h-[calc(100vh-75px)] w-full ">
         <section className="flex flex-col w-[90%] h-[90%] justify-center items-center bg-[#10121c]">
-          <div className="flex flex-col w-full h-full grow-0">
-            <Controls />
-            <div className="p-2 overflow-y-scroll">
-              <DisplayJSON />
-            </div>
-          </div>
+          <DisplayJSON />
         </section>
       </div>
     </main>
