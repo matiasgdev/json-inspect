@@ -1,6 +1,6 @@
-import {JsonProperties} from '../../../hooks/useJsonNodeMap'
-import {JsonIdentity} from '../../../utils/get-metadata-json'
-import {cn} from '../../../utils/cn'
+import {JsonProperties} from '@/hooks/useJsonNodeMap'
+import {JsonIdentity} from '@/utils/get-metadata-json'
+import {cn} from '@/utils/cn'
 
 interface JsonValueProps {
   value?: JsonIdentity
